@@ -1,0 +1,251 @@
+<form
+name="form"
+(ngSubmit)="onSubmit()"
+#f="ngForm"
+novalidate
+>
+
+<div class="col-lg-12" style=" background-color: white;" >
+<br>
+<div class="row">
+
+<div class="col-lg-4">
+<label>Account Number</label>
+<input
+type="text"
+class="form-control"
+id="account_number"
+name="account_number"
+required
+[(ngModel)]="form.account_number"
+/>
+<label>Phone No</label>
+<input
+type="text"
+class="form-control"
+id="phone_no"
+name="phone_no"
+required
+[(ngModel)]="form.phone_no"
+/>
+
+<label>Company Name</label>
+<input
+type="text"
+class="form-control"
+id="company_name"
+name="company_name"
+required
+[(ngModel)]="form.company_name"
+/>
+<br><br>
+<button class="btn btn-info ">
+Create Customer
+</button>
+
+</div>
+
+<div class="col-lg-4">
+
+<label>State</label>
+<input
+type="text"
+class="form-control"
+id="state"
+name="state"
+required
+[(ngModel)]="form.state"
+/>
+<label>Address</label>
+<input
+type="text"
+class="form-control"
+id="address"
+name="address"
+required
+[(ngModel)]="form.address"
+/>
+</div>
+
+<div class="col-lg-4">
+
+<label>Zip Code</label>
+<input
+type="text"
+class="form-control"
+id="zip_code"
+name="zip_code"
+required
+[(ngModel)]="form.zip_code"
+/>
+<label>City</label>
+<input
+type="text"
+class="form-control"
+id="city"
+name="city"
+required
+[(ngModel)]="form.city"
+/>
+</div>
+
+
+</div>
+ <br>
+</div>
+</form>
+
+
+<style>
+
+</style>
+<br>
+<div style="background-color: white;" class="table-responsive">
+<table class="table table-striped table-bordered display" >
+<nav class="navbar" style="float: left;">
+&nbsp;&nbsp;    
+<label >Search : </label>&nbsp;&nbsp;&nbsp; 
+<input type="text" name="search" [(ngModel)]="form.search"
+style="width:175px; height:20px; font-size: 12px;" >      
+</nav>
+<tr>
+<th (click)="sortId()">Id</th>
+<th (click)="sortData()">Account Number</th>
+<th>Company Name</th>
+<th>Address</th>
+<th>City</th>
+<th>State</th>
+<th>Zip Code</th>
+<th>Phone</th>
+<th>Edit</th>
+<th>Delete</th>
+
+</tr>
+<tr *ngFor="let info of getData | filter:form.search;">
+<td>{{info.id}}</td>
+<td>{{info.accountNumber}}</td>
+<td>{{info.companyName}}</td>
+<td>{{info.address}}</td>
+<td>{{info.city}}</td>
+<td>{{info.state}}</td>
+<td>{{info.zipCode}}</td>
+<td>{{info.phone}}</td>
+<td><button class="btn btn-info" (click)="edit(info.id,info.accountNumber,info.companyName,info.address,info.city,info.state,
+info.zipCode,info.phone,info.rowVersion)" 
+(click)="openModal()">Edit</button></td>
+<td><button (click)="deleteData(info.id)" class="btn btn-info">Delete</button></td>
+
+</tr>
+
+</table>
+
+<div class="pagination">
+
+<div>
+<button class="btn btn-info" (click)="firstPage()" >First</button>
+</div>
+
+
+<div>
+<button class="btn btn-info" (click)="previousPage()">Prev</button>
+</div>
+
+<div>
+<button class="btn btn-info" (click)="nextPage()">Next</button>
+</div>
+
+<!--div>
+<button class="btn btn-primary" (click)="lastPage()">Last</button>
+</div-->
+
+</div>
+
+<div align="center">Page Number: {{pagination.page_number}}</div>
+
+</div>
+
+
+<div class="backdrop" [ngStyle]="{'display':display1}"></div>
+<div class="modal" tabindex="-1" role="dialog"  [ngStyle]="{'display':display1}"  >
+<div class="modal-dialog" role="document" >
+<div class="modal-content" style="width:600px;" >
+<div class="modal-header" style="background-color:aliceblue;" >
+
+<h4 class="modal-title">Edit Customer</h4>
+<button class="close" type="button" aria-label="Close" (click)="onCloseHandled()" >
+<span aria-hidden="true">&times;</span></button>
+</div>
+
+<form
+name="form"
+(ngSubmit)="edit_data()"
+#f="ngForm"
+novalidate
+>
+
+<div class="modal-body" style="background-color:aliceblue ;">
+
+<input type="hidden" id="id" name="id" [(ngModel)]="form.id"  />
+<input type="hidden" id="rowVersion" name="rowVersion" [(ngModel)]="form.rowVersion"  />
+
+<div class="form-group">
+
+<label class="col-lg-5"> Account Number<span style="color:red;">*</span></label>
+
+<input type="text" readonly id="account_number" name="account_number" required 
+[(ngModel)]="form.account_number" 
+class="form-control" >
+
+<label class="col-lg-5"> Phone No<span style="color:red;">*</span></label>
+
+<input type="text" id="phone" name="phone" required 
+[(ngModel)]="form.phone"  
+class="form-control" >
+
+<label class="col-lg-5"> Company Name<span style="color:red;">*</span></label>
+
+<input type="text" id="companyName" name="companyName" required 
+[(ngModel)]="form.companyName" 
+class="form-control" >
+
+<label class="col-lg-5"> State<span style="color:red;">*</span></label>
+
+<input type="text" id="state" name="state" required 
+[(ngModel)]="form.state" 
+class="form-control" >
+
+<label class="col-lg-5"> Address<span style="color:red;">*</span></label>
+
+<input type="text" id="address" name="address" required 
+[(ngModel)]="form.address"  
+class="form-control" >
+
+<label class="col-lg-5"> Zip Code<span style="color:red;">*</span></label>
+
+<input type="text" id="zipCode" name="zipCode" required 
+[(ngModel)]="form.zipCode"  
+class="form-control" >
+
+<label class="col-lg-5"> City<span style="color:red;">*</span></label>
+
+<input type="text" id="city" name="city" required 
+[(ngModel)]="form.city"  
+class="form-control" >
+
+
+</div>
+</div>
+
+<div class="modal-footer" style="background-color:aliceblue;" >
+<button class="btn btn-info" type="submit"
+(click)="onCloseHandled()"  
+>Save</button>
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
+
